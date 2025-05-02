@@ -46,7 +46,7 @@ public class ChatbotActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.send_button);
         chatContainer = findViewById(R.id.chat_container);
         scrollView = findViewById(R.id.scroll_view);
-        appendMessage("Bot: Hello! I’m your travel assistant. Ask me anything about places, tips, food, or transport!");
+        appendMessage("Hello! I’m JovaBot. Ask me anything about places, tips, food, or transport!", false);
 
         SharedPreferences prefs = getSharedPreferences("chatbot", MODE_PRIVATE);
         clientId = prefs.getString("client_id", UUID.randomUUID().toString());
@@ -59,7 +59,7 @@ public class ChatbotActivity extends AppCompatActivity {
         String message = messageInput.getText().toString().trim();
         if (message.isEmpty()) return;
 
-        appendMessage("You: " + message);
+        appendMessage(message, true);
         messageInput.setText("");
 
         JSONObject json = new JSONObject();
@@ -82,7 +82,7 @@ public class ChatbotActivity extends AppCompatActivity {
 
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
-                runOnUiThread(() -> appendMessage("Error: " + e.getMessage()));
+                runOnUiThread(() -> appendMessage("Error: " + e.getMessage(), false));
             }
 
             @Override public void onResponse(Call call, Response response) throws IOException {
@@ -90,25 +90,25 @@ public class ChatbotActivity extends AppCompatActivity {
                     try {
                         JSONObject res = new JSONObject(response.body().string());
                         String reply = res.getString("reply");
-                        runOnUiThread(() -> appendMessage("Bot: " + reply));
+                        runOnUiThread(() -> appendMessage(reply, false));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    runOnUiThread(() -> appendMessage("Server error."));
+                    runOnUiThread(() -> appendMessage("Server error.", false));
                 }
             }
         });
     }
 
-    private void appendMessage(String message) {
+    private void appendMessage(String message, Boolean isUser) {
         runOnUiThread(() -> {
             TextView messageView = new TextView(this);
             messageView.setText(message);
             messageView.setTextSize(16);
             messageView.setPadding(20, 10, 20, 10);
 
-            if (message.startsWith("You:")) {
+            if (isUser) {
                 messageView.setBackgroundColor(0xFF9FE2BF); // darker green
                 messageView.setTextColor(0xFF000000);
                 messageView.setTextIsSelectable(false);

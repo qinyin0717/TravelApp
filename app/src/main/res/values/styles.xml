@@ -8,4 +8,16 @@
         <!-- Secondary / accent color -->
         <item name="colorSecondary">@color/teal_200</item>
     </style>
+    <style name="AppButtonStyle">
+        <item name="android:backgroundTint">#33A1D6</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item> <!-- 👈 Text size set here -->
+        <item name="android:elevation">4dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
+    </style>
+
 </resources>

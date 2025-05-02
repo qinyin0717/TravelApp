@@ -14,7 +14,7 @@ import my.edu.utar.travelapp.TravelGuide.TravelGuideActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnGoSettings, btnGoProfile, btnGoTravelGuide,btnGoPostPage, btnGoAIBox;
+    private Button btnGoSettings, btnGoProfile, btnGoTravelGuide,btnGoPostPage, btnGoAIBox, btnExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         btnGoTravelGuide = findViewById(R.id.btn_go_travel_guide); // 新增按钮
         btnGoPostPage = findViewById(R.id.btn_go_post_page);
         btnGoAIBox = findViewById(R.id.btn_go_AI_Box);
+        btnExit = findViewById(R.id.btn_Exit);
 
         btnGoSettings.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingActivity.class);
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         btnGoAIBox.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
             startActivity(intent);
+        });
+
+        btnExit.setOnClickListener(v -> {
+            finishAffinity(); // Closes all activities
+            System.exit(0);   // Forcefully exits the app process
         });
     }
 }
