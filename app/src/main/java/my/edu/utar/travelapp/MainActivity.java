@@ -3,17 +3,18 @@ package my.edu.utar.travelapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import my.edu.utar.travelapp.AI.ChatbotActivity;
 import my.edu.utar.travelapp.Post.PostActivity;
 import my.edu.utar.travelapp.Setting.ProfileActivity;
 import my.edu.utar.travelapp.Setting.SettingActivity;
-import my.edu.utar.travelapp.TravelGuide.RecommendationDetailActivity;
 import my.edu.utar.travelapp.TravelGuide.TravelGuideActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnGoSettings, btnGoProfile, btnGoTravelGuide,btnGoPostPage;
+    private Button btnGoSettings, btnGoProfile, btnGoTravelGuide,btnGoPostPage, btnGoAIBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         btnGoProfile = findViewById(R.id.btn_go_profile);
         btnGoTravelGuide = findViewById(R.id.btn_go_travel_guide); // 新增按钮
         btnGoPostPage = findViewById(R.id.btn_go_post_page);
+        btnGoAIBox = findViewById(R.id.btn_go_AI_Box);
 
         btnGoSettings.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingActivity.class);
@@ -43,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
         btnGoPostPage.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, PostActivity.class);
+            startActivity(intent);
+        });
+
+        btnGoAIBox.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
             startActivity(intent);
         });
     }
