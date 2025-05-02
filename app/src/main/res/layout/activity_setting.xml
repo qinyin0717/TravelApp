@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <Switch
+            android:id="@+id/switch_alerts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enable Real-Time Alerts"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btn_test_alert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Test Alert"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"/>
+
+        <Switch
+            android:id="@+id/switch_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enable Location-Based Tips"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:text="Theme"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioGroup
+            android:id="@+id/radio_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radio_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Light Mode" />
+
+            <RadioButton
+                android:id="@+id/radio_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dark Mode" />
+
+            <RadioButton
+                android:id="@+id/radio_system"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System Default" />
+        </RadioGroup>
+
+        <Switch
+            android:id="@+id/switch_offline_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enable Offline Mode"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btn_view_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Profile"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:textSize="18sp"
+            android:layout_marginTop="32dp"/>
+
+        <Button
+            android:id="@+id/btn_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Feedback"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/btn_reset_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset All Settings"
+            android:layout_marginTop="24dp"
+            android:textColor="@android:color/holo_red_dark" />
+
+    </LinearLayout>
+</ScrollView>

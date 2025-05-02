@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textViewPost" type="id" />
+    <item name="buttonLike" type="id" />
+    <item name="buttonComment" type="id" />
+    <item name="buttonShare" type="id" />
+    <item name="imageViewProfile" type="id" />
+</resources>
