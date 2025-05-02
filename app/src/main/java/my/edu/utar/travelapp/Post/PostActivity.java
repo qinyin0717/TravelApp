@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.*;
 
-import my.edu.utar.travelapp.Post.R;
+import my.edu.utar.travelapp.R;
 
 public class PostActivity extends AppCompatActivity {
     private LinearLayout headerCollapsed, composerExpanded, statusContainer;
