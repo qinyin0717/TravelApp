@@ -4,8 +4,6 @@ package my.edu.utar.travelapp.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.edu.utar.travelapp.Post.Post;
-
 public class DataRepository {
     private static final List<Post> POSTS = new ArrayList<>();
     public static List<Post> getPosts() { return POSTS; }

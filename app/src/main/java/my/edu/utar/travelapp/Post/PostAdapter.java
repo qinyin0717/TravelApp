@@ -1,22 +1,18 @@
 package my.edu.utar.travelapp.Post;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
-import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.button.MaterialButton;
-
 import java.util.List;
-
 import my.edu.utar.travelapp.R;
-
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private final List<Post> posts;
 
@@ -26,9 +22,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int vt) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_post, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
         return new ViewHolder(v);
     }
 
@@ -36,103 +31,108 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
         Post post = posts.get(pos);
 
-        h.textViewUserName.setText(post.getUserName());
         h.imageViewProfile.setImageResource(R.drawable.ic_profile_test);
         h.textViewPost.setText(post.getText());
 
-        // Tagged people
-        List<String> tags = post.getTaggedPeople();
-        TextView tvFeedTagged = h.itemView.findViewById(R.id.textViewFeedTagged);
-        if (tags != null && !tags.isEmpty()) {
-            tvFeedTagged.setText("Tagged " + tags.size() + " people");
-            tvFeedTagged.setVisibility(View.VISIBLE);
-            tvFeedTagged.setOnClickListener(view -> {
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Tagged People")
-                        .setItems(tags.toArray(new String[0]), null)
-                        .show();
-            });
+        Post shared = post.getSharedPost();
+        if (shared != null) {
+            h.textViewUserName.setText("Shared by " + post.getSharedBy());
+            h.textViewPost.setTypeface(null, Typeface.BOLD);
+            h.sharedContainer.setVisibility(View.VISIBLE);
+            h.textViewShared.setText("Originally posted by " + shared.getUserName() + ": " + shared.getText());
         } else {
-            tvFeedTagged.setVisibility(View.GONE);
+            h.textViewUserName.setText(post.getUserName());
+            h.textViewPost.setTypeface(null, Typeface.NORMAL);
+            h.sharedContainer.setVisibility(View.GONE);
         }
 
-        // Media URIs
-        Uri img = post.getImageUri();
-        Uri vid = post.getVideoUri();
+        List<String> tags = post.getTaggedPeople();
+        if (tags != null && !tags.isEmpty()) {
+            h.textViewFeedTagged.setText("Tagged " + tags.size() + " people");
+            h.textViewFeedTagged.setVisibility(View.VISIBLE);
+        } else {
+            h.textViewFeedTagged.setVisibility(View.GONE);
+        }
 
-        Log.d("PostAdapter", "Binding post at " + pos + " → img=" + img + ", vid=" + vid);
-
+        Uri img = post.getImageUri(), vid = post.getVideoUri();
         try {
             if (img != null) {
                 h.imageViewPost.setVisibility(View.VISIBLE);
                 h.videoViewPost.setVisibility(View.GONE);
-                h.imageViewPost.setImageURI(null); // Reset
+                h.imageViewPost.setImageURI(null);
                 h.imageViewPost.setImageURI(img);
             } else if (vid != null) {
                 h.videoViewPost.setVisibility(View.VISIBLE);
                 h.imageViewPost.setVisibility(View.GONE);
-                h.videoViewPost.setVideoURI(null); // Reset
                 h.videoViewPost.setVideoURI(vid);
-                h.videoViewPost.start();
+                h.videoViewPost.setOnPreparedListener(mp -> h.videoViewPost.start());
             } else {
                 h.imageViewPost.setVisibility(View.GONE);
                 h.videoViewPost.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            Log.e("PostAdapter", "Media binding failed at pos " + pos, e);
             h.imageViewPost.setVisibility(View.GONE);
             h.videoViewPost.setVisibility(View.GONE);
         }
 
-        // Location
         String loc = post.getLocation();
-        TextView tvLoc = h.itemView.findViewById(R.id.textViewPostLocation);
         if (loc != null && !loc.isEmpty()) {
-            tvLoc.setText(loc);
-            tvLoc.setVisibility(View.VISIBLE);
+            h.textViewPostLocation.setText(loc);
+            h.textViewPostLocation.setVisibility(View.VISIBLE);
         } else {
-            tvLoc.setVisibility(View.GONE);
+            h.textViewPostLocation.setVisibility(View.GONE);
         }
 
-        // Like & comment counts
         h.buttonLike.setText("Like (" + post.getLikeCount() + ")");
-        h.buttonComment.setText("Comment (" + post.getCommentCount() + ")");
-
+        h.buttonComment.setVisibility(View.GONE);
         h.buttonLike.setIconTintResource(
-                post.isLiked()
-                        ? R.color.colorPrimary
-                        : R.color.colorOnSurfaceVariant
+                post.isLiked() ? R.color.colorPrimary : R.color.colorOnSurfaceVariant
         );
 
-        // Like
         h.buttonLike.setOnClickListener(v -> {
             post.toggleLike();
             notifyItemChanged(pos);
         });
 
-        // Comment
-        h.buttonComment.setOnClickListener(v -> {
-            Context ctx = v.getContext();
-            final EditText input = new EditText(ctx);
-            new AlertDialog.Builder(ctx)
-                    .setTitle("Add a comment")
-                    .setView(input)
-                    .setPositiveButton("Post", (dialog, which) -> {
-                        post.comment();
-                        notifyItemChanged(pos);
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show();
-        });
-
-        // Share
         h.buttonShare.setOnClickListener(v -> {
             Context ctx = v.getContext();
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            share.putExtra(Intent.EXTRA_TEXT, post.getText());
-            ctx.startActivity(Intent.createChooser(share, "Share post via"));
+            Intent intent = new Intent(ctx, PostActivity.class);
+            intent.putExtra("sharedText", post.getText());
+            intent.putExtra("sharedUser", post.getUserName());
+            if (post.getImageUri() != null)
+                intent.putExtra("sharedImageUri", post.getImageUri().toString());
+            if (post.getVideoUri() != null)
+                intent.putExtra("sharedVideoUri", post.getVideoUri().toString());
+            ctx.startActivity(intent);
         });
+
+        h.buttonSubmitComment.setOnClickListener(v -> {
+            String commentText = h.editTextNewComment.getText().toString().trim();
+            if (!commentText.isEmpty()) {
+                Context ctx = v.getContext();
+                Uri profileUri = Uri.parse("android.resource://" + ctx.getPackageName() + "/" + R.drawable.ic_profile_test);
+                Post.Comment newComment = new Post.Comment("Test User", profileUri, commentText);
+                post.addComment(newComment);
+                h.editTextNewComment.setText("");
+                notifyItemChanged(pos);
+            }
+        });
+
+        List<Post.Comment> comments = post.getComments();
+        h.layoutCommentList.removeAllViews();
+        if (!comments.isEmpty()) {
+            h.layoutCommentList.setVisibility(View.VISIBLE);
+            Context ctx = h.itemView.getContext();
+            for (Post.Comment c : comments) {
+                View cv = LayoutInflater.from(ctx).inflate(R.layout.comment_item, h.layoutCommentList, false);
+                ((TextView) cv.findViewById(R.id.textViewCommentUser)).setText(c.getUserName());
+                ((TextView) cv.findViewById(R.id.textViewCommentText)).setText(c.getText());
+                ((ImageView) cv.findViewById(R.id.imageViewCommentProfile)).setImageURI(c.getUserProfileUri());
+                h.layoutCommentList.addView(cv);
+            }
+        } else {
+            h.layoutCommentList.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -143,20 +143,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewProfile, imageViewPost;
         VideoView videoViewPost;
-        TextView textViewUserName, textViewPost;
-        Button buttonComment, buttonShare;
+        TextView textViewUserName, textViewPost, textViewPostLocation, textViewFeedTagged, textViewShared;
+        LinearLayout sharedContainer, layoutCommentList;
         MaterialButton buttonLike;
+        Button buttonComment, buttonShare, buttonSubmitComment;
+        EditText editTextNewComment;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewProfile = itemView.findViewById(R.id.imageViewProfile);
             textViewUserName = itemView.findViewById(R.id.textViewUserName);
             textViewPost = itemView.findViewById(R.id.textViewPost);
+            sharedContainer = itemView.findViewById(R.id.sharedContainer);
+            textViewShared = itemView.findViewById(R.id.textViewSharedContent);
+            textViewPostLocation = itemView.findViewById(R.id.textViewPostLocation);
+            textViewFeedTagged = itemView.findViewById(R.id.textViewFeedTagged);
             imageViewPost = itemView.findViewById(R.id.imageViewPost);
             videoViewPost = itemView.findViewById(R.id.videoViewPost);
             buttonLike = itemView.findViewById(R.id.buttonLike);
             buttonComment = itemView.findViewById(R.id.buttonComment);
             buttonShare = itemView.findViewById(R.id.buttonShare);
+            editTextNewComment = itemView.findViewById(R.id.editTextNewComment);
+            buttonSubmitComment = itemView.findViewById(R.id.buttonSubmitComment);
+            layoutCommentList = itemView.findViewById(R.id.layoutCommentList);
         }
     }
 }

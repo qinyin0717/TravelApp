@@ -6,4 +6,10 @@
     <item name="buttonShare" type="id" />
     <item name="imageViewProfile" type="id" />
     <item name="textViewTagged" type="id" />
+    <item name="textViewSharedContent" type="id" />
+    <item name="textViewCommentList" type="id" />
+    <item name="sharedContainer" type="id" />
+    <item name="editTextNewComment" type="id" />
+    <item name="buttonSubmitComment" type="id" />
+    <item name="layoutCommentList" type="id" />
 </resources>
