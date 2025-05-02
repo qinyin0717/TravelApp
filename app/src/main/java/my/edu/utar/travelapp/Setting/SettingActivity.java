@@ -1,4 +1,4 @@
-package my.edu.utar.travelapp;
+package my.edu.utar.travelapp.Setting;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import my.edu.utar.travelapp.R;
 
 public class SettingActivity extends AppCompatActivity {
 

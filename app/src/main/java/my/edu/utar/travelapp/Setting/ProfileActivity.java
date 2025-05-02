@@ -1,4 +1,4 @@
-package my.edu.utar.travelapp;
+package my.edu.utar.travelapp.Setting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Button;
+
+import my.edu.utar.travelapp.R;
 
 public class ProfileActivity extends AppCompatActivity {
 

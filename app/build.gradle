@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'my.edu.utar.travelapp'
+    namespace 'com.example.mobileapp'
     compileSdk 34
 
     defaultConfig {
-        applicationId "my.edu.utar.travelapp"
+        applicationId "com.example.travelapp"
         minSdk 24
         targetSdk 34
         versionCode 1
@@ -29,6 +29,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'io.socket:socket.io-client:2.0.1' // for WebSocket (optional)
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'

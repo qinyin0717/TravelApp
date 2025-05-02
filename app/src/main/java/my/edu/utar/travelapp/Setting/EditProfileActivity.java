@@ -1,4 +1,4 @@
-package my.edu.utar.travelapp;
+package my.edu.utar.travelapp.Setting;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.Toast;import android.text.Editable;
 import android.text.TextWatcher;
 import androidx.appcompat.app.AppCompatActivity;
+
+import my.edu.utar.travelapp.R;
 
 public class EditProfileActivity extends AppCompatActivity {
 

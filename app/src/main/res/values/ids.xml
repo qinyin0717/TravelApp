@@ -5,4 +5,5 @@
     <item name="buttonComment" type="id" />
     <item name="buttonShare" type="id" />
     <item name="imageViewProfile" type="id" />
+    <item name="textViewTagged" type="id" />
 </resources>
