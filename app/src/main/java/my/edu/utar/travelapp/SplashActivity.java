@@ -3,7 +3,10 @@ package my.edu.utar.travelapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,24 +20,29 @@ public class SplashActivity extends AppCompatActivity {
     private TextView loadingText;
     private int progressStatus = 0;
     private Handler handler = new Handler();
+    private LinearLayout rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // 加载 gif 动画
+        rootLayout = findViewById(R.id.root_layout);
+
+        // 淡入动画
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        rootLayout.startAnimation(fadeIn);
+
+        // 加载 gif
         ImageView gifView = findViewById(R.id.splash_gif);
         Glide.with(this)
                 .asGif()
-                .load(R.drawable.gif) // 确保你的 gif.gif 放在 res/drawable/ 中
+                .load(R.drawable.gif)
                 .into(gifView);
 
-        // 加载条 + 百分比
         loadingBar = findViewById(R.id.loading_bar);
         loadingText = findViewById(R.id.loading_text);
 
-        // 模拟加载过程
         new Thread(() -> {
             while (progressStatus < 100) {
                 progressStatus += 1;
@@ -45,17 +53,22 @@ public class SplashActivity extends AppCompatActivity {
                 });
 
                 try {
-                    Thread.sleep(30); // 控制进度速度
+                    Thread.sleep(30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            // 加载完成后跳转到主页
             handler.post(() -> {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                // 淡出动画
+                Animation fadeOut = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.fade_out);
+                rootLayout.startAnimation(fadeOut);
+
+                new Handler().postDelayed(() -> {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                }, 500);
             });
         }).start();
     }
