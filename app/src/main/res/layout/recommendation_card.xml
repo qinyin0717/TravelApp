@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -36,19 +37,51 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/place_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📢 Some update here"
+            android:textSize="12sp"
+            android:textColor="#D32F2F"
+            android:layout_marginTop="4dp" />
+
+        <TextView
             android:id="@+id/place_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="⭐ 4.5"
             android:textSize="14sp"
             android:textColor="#FF9800"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/latest_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💬 No comment yet"
+            android:textSize="12sp"
+            android:textColor="#444444"
+            android:layout_marginTop="4dp" />
 
         <Button
             android:id="@+id/detail_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View Details"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/rate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate"
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/comment_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 </LinearLayout>

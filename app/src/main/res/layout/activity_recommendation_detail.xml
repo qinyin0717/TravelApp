@@ -1,40 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:fillViewport="true">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/detail_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:text="Place Title"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:id="@+id/detail_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FF9800"
-            android:textSize="18sp"
-            android:layout_marginTop="6dp" />
+            android:layout_marginTop="12dp" />
 
         <TextView
             android:id="@+id/detail_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Description here..."
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/detail_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⭐ 4.3"
             android:textSize="16sp"
-            android:layout_marginTop="10dp" />
+            android:textColor="#FF9800"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/comments_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comments:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/comment_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No comments yet."
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp" />
+
     </LinearLayout>
 </ScrollView>
