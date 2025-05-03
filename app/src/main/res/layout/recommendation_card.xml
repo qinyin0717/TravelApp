@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Card-like row layout for a travel recommendation item -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,6 +8,7 @@
     android:background="@android:color/white"
     android:layout_marginBottom="10dp">
 
+    <!-- Left: Image preview of the place -->
     <ImageView
         android:id="@+id/place_image"
         android:layout_width="100dp"
@@ -14,6 +16,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/img1" />
 
+    <!-- Right: Text and action buttons container -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -21,6 +24,7 @@
         android:layout_marginStart="10dp"
         android:orientation="vertical">
 
+        <!-- Place title -->
         <TextView
             android:id="@+id/place_title"
             android:layout_width="wrap_content"
@@ -29,6 +33,7 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <!-- Short description -->
         <TextView
             android:id="@+id/place_desc"
             android:layout_width="wrap_content"
@@ -36,6 +41,7 @@
             android:text="Short description"
             android:textSize="14sp" />
 
+        <!-- Optional update note (e.g., announcements) -->
         <TextView
             android:id="@+id/place_update"
             android:layout_width="wrap_content"
@@ -45,6 +51,7 @@
             android:textColor="#D32F2F"
             android:layout_marginTop="4dp" />
 
+        <!-- Average rating display -->
         <TextView
             android:id="@+id/place_rating"
             android:layout_width="wrap_content"
@@ -54,6 +61,7 @@
             android:textColor="#FF9800"
             android:layout_marginTop="4dp" />
 
+        <!-- Latest user comment preview -->
         <TextView
             android:id="@+id/latest_comment"
             android:layout_width="wrap_content"
@@ -63,6 +71,7 @@
             android:textColor="#444444"
             android:layout_marginTop="4dp" />
 
+        <!-- Button to view more details about the place -->
         <Button
             android:id="@+id/detail_button"
             android:layout_width="wrap_content"
@@ -70,6 +79,7 @@
             android:text="View Details"
             android:layout_marginTop="4dp" />
 
+        <!-- Button to leave a rating -->
         <Button
             android:id="@+id/rate_button"
             android:layout_width="wrap_content"
@@ -77,6 +87,7 @@
             android:text="Rate"
             android:layout_marginTop="4dp" />
 
+        <!-- Button to add a comment -->
         <Button
             android:id="@+id/comment_button"
             android:layout_width="wrap_content"

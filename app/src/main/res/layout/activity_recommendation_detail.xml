@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
+    <!-- Root vertical layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Place image -->
         <ImageView
             android:id="@+id/detail_image"
             android:layout_width="match_parent"
@@ -17,6 +19,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background" />
 
+        <!-- Title of the place -->
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="wrap_content"
@@ -26,6 +29,7 @@
             android:textStyle="bold"
             android:layout_marginTop="12dp" />
 
+        <!-- Full description of the place -->
         <TextView
             android:id="@+id/detail_description"
             android:layout_width="wrap_content"
@@ -33,6 +37,7 @@
             android:text="Description here..."
             android:layout_marginTop="8dp" />
 
+        <!-- Display average rating -->
         <TextView
             android:id="@+id/detail_rating"
             android:layout_width="wrap_content"
@@ -42,6 +47,7 @@
             android:textColor="#FF9800"
             android:layout_marginTop="8dp" />
 
+        <!-- Label for comments section -->
         <TextView
             android:id="@+id/comments_label"
             android:layout_width="wrap_content"
@@ -51,6 +57,7 @@
             android:textStyle="bold"
             android:layout_marginTop="12dp" />
 
+        <!-- Text area showing comments -->
         <TextView
             android:id="@+id/comment_list"
             android:layout_width="match_parent"

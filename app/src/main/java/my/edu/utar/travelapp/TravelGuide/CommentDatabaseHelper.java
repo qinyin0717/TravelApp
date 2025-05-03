@@ -11,23 +11,31 @@ import java.util.List;
 
 public class CommentDatabaseHelper extends SQLiteOpenHelper {
 
+    // Database configuration
     private static final String DATABASE_NAME = "travel_comments.db";
     private static final int DATABASE_VERSION = 2;
 
+    // Table names
     private static final String TABLE_COMMENTS = "comments";
     private static final String TABLE_RATINGS = "ratings";
 
+    // Common columns
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_PLACE = "place";
     private static final String COLUMN_USER = "user";
+
+    // Comments table columns
     private static final String COLUMN_TEXT = "text";
     private static final String COLUMN_TIMESTAMP = "timestamp";
+
+    // Ratings table columns
     private static final String COLUMN_SCORE = "score";
 
     public CommentDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Called when the database is created for the first time
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createComments = "CREATE TABLE " + TABLE_COMMENTS + " (" +
@@ -47,6 +55,7 @@ public class CommentDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createRatings);
     }
 
+    // Called when upgrading the database version
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMMENTS);
@@ -54,6 +63,7 @@ public class CommentDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // Insert a comment for a specific place
     public void insertComment(String place, String user, String text) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -64,6 +74,7 @@ public class CommentDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Retrieve all comments for a specific place
     public List<String> getCommentsByPlace(String place) {
         List<String> comments = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -88,6 +99,7 @@ public class CommentDatabaseHelper extends SQLiteOpenHelper {
         return comments;
     }
 
+    // Insert or update a user's rating for a specific place
     public void insertOrUpdateRating(String place, String user, int score) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -111,6 +123,7 @@ public class CommentDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Calculate the average rating for a specific place
     public double getAverageRatingForPlace(String place) {
         double average = 0.0;
         SQLiteDatabase db = this.getReadableDatabase();

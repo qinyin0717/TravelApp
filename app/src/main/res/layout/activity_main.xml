@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:background="@drawable/wallpaper"
-    >
+    android:background="@drawable/wallpaper">  <!-- Set custom background wallpaper -->
 
-
+    <!-- App title at the top -->
     <TextView
         android:id="@+id/slogan_text"
         android:layout_width="wrap_content"
@@ -25,8 +24,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="32dp" />
 
+    <!-- Subtitle tagline below the title -->
     <TextView
         android:id="@+id/slogan_text2"
         android:layout_width="wrap_content"
@@ -43,10 +43,9 @@
         app:layout_constraintTop_toBottomOf="@+id/slogan_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
-
-
+    <!-- Travel Guide button -->
     <Button
         style="@style/AppButtonStyle"
         android:id="@+id/btn_go_travel_guide"
@@ -56,6 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp" />
 
+    <!-- Chatbot feature button -->
     <Button
         style="@style/AppButtonStyle"
         android:id="@+id/btn_go_AI_Box"
@@ -65,6 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+    <!-- Posts page button -->
     <Button
         style="@style/AppButtonStyle"
         android:id="@+id/btn_go_post_page"
@@ -74,6 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+    <!-- User profile button -->
     <Button
         style="@style/AppButtonStyle"
         android:id="@+id/btn_go_profile"
@@ -83,6 +85,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+    <!-- Settings page button -->
     <Button
         style="@style/AppButtonStyle"
         android:id="@+id/btn_go_settings"
@@ -92,6 +95,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
 
+    <!-- Exit button -->
     <Button
         style="@style/AppButtonStyle"
         android:id="@+id/btn_Exit"

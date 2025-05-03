@@ -1,15 +1,15 @@
 package my.edu.utar.travelapp.Setting;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Intent;
-import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import my.edu.utar.travelapp.R;
 
@@ -23,12 +23,12 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String IMAGE_KEY = "profile_image";
     private ImageView imageProfileView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        // Initialize views
         textName = findViewById(R.id.text_name);
         textBio = findViewById(R.id.text_bio);
         btnEditProfile = findViewById(R.id.btn_edit_profile);
@@ -36,22 +36,23 @@ public class ProfileActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        // Load image from SharedPreferences
+        // Load profile image from SharedPreferences
         String imageUri = prefs.getString(IMAGE_KEY, "");
         if (!imageUri.isEmpty()) {
             imageProfileView.setImageURI(Uri.parse(imageUri));
         }
 
-        // Load name & bio
+        // Load name and bio
         loadProfileData();
 
-        // Button to go edit profile
+        // Launch EditProfileActivity on button click
         btnEditProfile.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
         });
     }
 
+    // Read and display user name and bio from SharedPreferences
     private void loadProfileData() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String name = prefs.getString(NAME_KEY, "No name set");
@@ -64,6 +65,6 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadProfileData(); // Refresh every time activity resumes
+        loadProfileData(); // Reload profile data when returning from EditProfileActivity
     }
 }

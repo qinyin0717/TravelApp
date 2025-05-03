@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Collapsed header -->
+    <!-- Collapsed header (click to expand composer) -->
     <LinearLayout
         android:id="@+id/headerCollapsed"
         android:orientation="horizontal"
@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- User profile icon -->
         <ImageView
             android:id="@+id/imageViewCurrentProfile"
             android:layout_width="40dp"
@@ -25,6 +26,7 @@
             android:background="@drawable/circle_background"
             android:src="@drawable/ic_profile_test"/>
 
+        <!-- Prompt text -->
         <TextView
             android:layout_marginStart="12dp"
             android:text="Share your traveling story"
@@ -33,7 +35,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <!-- Expanded composer -->
+    <!-- Expanded composer for post creation (initially hidden) -->
     <LinearLayout
         android:id="@+id/composerExpanded"
         android:orientation="vertical"
@@ -45,13 +47,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- User info -->
+        <!-- User info section -->
         <LinearLayout
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- Composer profile picture -->
             <ImageView
                 android:id="@+id/imageViewComposerProfile"
                 android:layout_width="40dp"
@@ -60,6 +63,7 @@
                 android:background="@drawable/circle_background"
                 android:src="@drawable/ic_profile_test"/>
 
+            <!-- Composer username -->
             <TextView
                 android:id="@+id/textViewComposerName"
                 android:layout_marginStart="12dp"
@@ -70,7 +74,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <!-- Post input -->
+        <!-- Text input field for post content -->
         <EditText
             android:id="@+id/editTextPost"
             android:hint="Share your Travel Story!"
@@ -78,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <!-- Action buttons -->
+        <!-- Row of action buttons (Tag, Upload, Location) -->
         <LinearLayout
             android:id="@+id/actionsRow"
             android:orientation="horizontal"
@@ -111,7 +115,7 @@
                 android:text="Add Location"/>
         </LinearLayout>
 
-        <!-- Location selectors (hidden initially) -->
+        <!-- Location spinners (hidden initially) -->
         <LinearLayout
             android:id="@+id/locationContainer"
             android:orientation="vertical"
@@ -120,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Label for State -->
+            <!-- State label -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,13 +132,14 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
 
+            <!-- State dropdown -->
             <Spinner
                 android:id="@+id/spinnerState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:prompt="@string/prompt_select_state"/>
 
-            <!-- Label for City -->
+            <!-- City label -->
             <TextView
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
@@ -143,6 +148,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
 
+            <!-- City dropdown -->
             <Spinner
                 android:id="@+id/spinnerCity"
                 android:layout_width="match_parent"
@@ -150,7 +156,7 @@
                 android:prompt="@string/prompt_select_city"/>
         </LinearLayout>
 
-        <!-- Progress & status -->
+        <!-- Posting status text -->
         <TextView
             android:id="@+id/textPostingStatus"
             android:layout_width="wrap_content"
@@ -160,6 +166,7 @@
             android:textStyle="italic"
             android:layout_marginTop="8dp"/>
 
+        <!-- Indeterminate progress bar -->
         <ProgressBar
             android:id="@+id/progressPosting"
             style="?android:attr/progressBarStyleHorizontal"
@@ -169,6 +176,7 @@
             android:layout_height="4dp"
             android:layout_marginTop="4dp"/>
 
+        <!-- Status icon and message (e.g. success/failure) -->
         <LinearLayout
             android:id="@+id/statusContainer"
             android:orientation="horizontal"
@@ -191,7 +199,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-
+        <!-- Display tagged users (if any) -->
         <TextView
             android:id="@+id/textViewTagged"
             android:layout_width="wrap_content"
@@ -199,7 +207,8 @@
             android:textColor="@android:color/holo_blue_dark"
             android:visibility="gone"
             android:layout_marginTop="8dp"/>
-        <!-- Post button -->
+
+        <!-- Submit post button -->
         <Button
             android:id="@+id/buttonPost"
             android:text="Post"
@@ -209,10 +218,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-
-
-
-    <!-- Feed -->
+    <!-- RecyclerView to show all posts in feed -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPosts"
         android:layout_marginTop="12dp"

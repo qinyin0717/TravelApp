@@ -25,6 +25,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import my.edu.utar.travelapp.R;
+
 public class ChatbotActivity extends AppCompatActivity {
 
     private EditText messageInput;
@@ -33,7 +34,7 @@ public class ChatbotActivity extends AppCompatActivity {
     private ScrollView scrollView;
 
     private String clientId;
-    private String sid = null; // From socket.io (not used yet)
+    private String sid = null; // reserved for socket.io session ID
     private final String SERVER_URL = "https://mobile-travel-chatbot.onrender.com";
 
     @Override
@@ -41,17 +42,21 @@ public class ChatbotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatbot);
 
-
+        // Initialize views
         messageInput = findViewById(R.id.message_input);
         sendButton = findViewById(R.id.send_button);
         chatContainer = findViewById(R.id.chat_container);
         scrollView = findViewById(R.id.scroll_view);
+
+        // Initial greeting
         appendMessage("Hello! I’m JovaBot. Ask me anything about places, tips, food, or transport!", false);
 
+        // Load or generate client ID
         SharedPreferences prefs = getSharedPreferences("chatbot", MODE_PRIVATE);
         clientId = prefs.getString("client_id", UUID.randomUUID().toString());
         prefs.edit().putString("client_id", clientId).apply();
 
+        // Handle send button
         sendButton.setOnClickListener(view -> sendMessage());
     }
 
@@ -59,9 +64,11 @@ public class ChatbotActivity extends AppCompatActivity {
         String message = messageInput.getText().toString().trim();
         if (message.isEmpty()) return;
 
+        // Add user message to chat
         appendMessage(message, true);
         messageInput.setText("");
 
+        // Prepare JSON payload
         JSONObject json = new JSONObject();
         try {
             json.put("message", message);
@@ -71,6 +78,7 @@ public class ChatbotActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        // Create HTTP request
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(
                 json.toString(), MediaType.parse("application/json; charset=utf-8"));
@@ -80,6 +88,7 @@ public class ChatbotActivity extends AppCompatActivity {
                 .post(body)
                 .build();
 
+        // Send request asynchronously
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 runOnUiThread(() -> appendMessage("Error: " + e.getMessage(), false));
@@ -103,29 +112,32 @@ public class ChatbotActivity extends AppCompatActivity {
 
     private void appendMessage(String message, Boolean isUser) {
         runOnUiThread(() -> {
-            // CardView for shadow and rounded background
+            // Create message bubble using CardView
             androidx.cardview.widget.CardView card = new androidx.cardview.widget.CardView(this);
-            card.setCardElevation(6); // shadow
+            card.setCardElevation(6); // shadow effect
             card.setRadius(12); // rounded corners
-            card.setUseCompatPadding(true); // extra padding for pre-Lollipop devices
+            card.setUseCompatPadding(true); // ensure compatibility
 
-            // TextView for the actual message
+            // Set up message text view
             TextView messageView = new TextView(this);
             messageView.setText(message);
             messageView.setTextSize(16);
             messageView.setPadding(20, 10, 20, 10);
 
+            // Layout and alignment
             LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
 
             if (isUser) {
-                card.setCardBackgroundColor(0xFF9FE2BF); // user: green
+                // Style for user message
+                card.setCardBackgroundColor(0xFF9FE2BF); // green
                 messageView.setTextColor(0xFF000000);
                 cardParams.setMargins(100, 10, 10, 10);
                 cardParams.gravity = Gravity.END;
             } else {
-                card.setCardBackgroundColor(0xFFFFFFFF); // bot: white
+                // Style for bot message
+                card.setCardBackgroundColor(0xFFFFFFFF); // white
                 messageView.setTextColor(0xFF000000);
                 cardParams.setMargins(10, 10, 100, 10);
                 cardParams.gravity = Gravity.START;
@@ -135,9 +147,8 @@ public class ChatbotActivity extends AppCompatActivity {
             card.addView(messageView);
             chatContainer.addView(card);
 
-            // Auto-scroll
+            // Auto-scroll to bottom
             scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
         });
     }
-
 }

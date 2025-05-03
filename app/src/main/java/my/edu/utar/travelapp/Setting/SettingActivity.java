@@ -2,14 +2,15 @@ package my.edu.utar.travelapp.Setting;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import my.edu.utar.travelapp.R;
 
@@ -29,8 +30,10 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
+        // Apply saved theme before UI initializes
         String savedTheme = prefs.getString(THEME_KEY, "system");
         switch (savedTheme) {
             case "light":
@@ -44,6 +47,7 @@ public class SettingActivity extends AppCompatActivity {
                 break;
         }
 
+        // Initialize UI components
         btnTestAlert = findViewById(R.id.btn_test_alert);
         switchAlerts = findViewById(R.id.switch_alerts);
         switchLocation = findViewById(R.id.switch_location);
@@ -54,10 +58,12 @@ public class SettingActivity extends AppCompatActivity {
         btnFeedback = findViewById(R.id.btn_feedback);
         btnResetSettings = findViewById(R.id.btn_reset_settings);
 
+        // Load saved toggle states
         switchAlerts.setChecked(prefs.getBoolean(ALERTS_KEY, true));
         switchLocation.setChecked(prefs.getBoolean(LOCATION_KEY, true));
         switchOfflineMode.setChecked(prefs.getBoolean(OFFLINE_MODE_KEY, false));
 
+        // Save toggle changes
         switchAlerts.setOnCheckedChangeListener((v, checked) ->
                 prefs.edit().putBoolean(ALERTS_KEY, checked).apply());
 
@@ -67,6 +73,7 @@ public class SettingActivity extends AppCompatActivity {
         switchOfflineMode.setOnCheckedChangeListener((v, checked) ->
                 prefs.edit().putBoolean(OFFLINE_MODE_KEY, checked).apply());
 
+        // Initialize selected radio button for theme
         switch (savedTheme) {
             case "light":
                 radioTheme.check(R.id.radio_light);
@@ -79,6 +86,7 @@ public class SettingActivity extends AppCompatActivity {
                 break;
         }
 
+        // Save theme selection
         radioTheme.setOnCheckedChangeListener((group, checkedId) -> {
             String selectedTheme = "system";
             if (checkedId == R.id.radio_light) {
@@ -93,6 +101,7 @@ public class SettingActivity extends AppCompatActivity {
             prefs.edit().putString(THEME_KEY, selectedTheme).apply();
         });
 
+        // Simulate alert preview
         btnTestAlert.setOnClickListener(v -> {
             if (prefs.getBoolean(ALERTS_KEY, true))
                 Toast.makeText(this, "🚨 Simulated Alert: A new tip is nearby!", Toast.LENGTH_LONG).show();
@@ -100,8 +109,10 @@ public class SettingActivity extends AppCompatActivity {
                 Toast.makeText(this, "⚠️ Alerts are off.", Toast.LENGTH_SHORT).show();
         });
 
+        // Navigate to profile screen
         btnViewProfile.setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
 
+        // Feedback via email
         btnFeedback.setOnClickListener(v -> {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("message/rfc822");
@@ -115,17 +126,19 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        // Reset all preferences
         btnResetSettings.setOnClickListener(v -> new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Reset Settings")
                 .setMessage("Are you sure you want to reset all settings?")
                 .setPositiveButton("Yes", (d, w) -> {
                     prefs.edit().clear().apply();
                     Toast.makeText(this, "Settings reset.", Toast.LENGTH_SHORT).show();
-                    recreate();
+                    recreate(); // Reload activity
                 })
                 .setNegativeButton("Cancel", null)
                 .show());
 
+        // Clear preferences and exit app
         btnLogout.setOnClickListener(v -> {
             prefs.edit().clear().apply();
             Toast.makeText(this, "Logged out.", Toast.LENGTH_SHORT).show();

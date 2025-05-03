@@ -14,49 +14,56 @@ import my.edu.utar.travelapp.TravelGuide.TravelGuideActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnGoSettings, btnGoProfile, btnGoTravelGuide,btnGoPostPage, btnGoAIBox, btnExit;
+    // Declare buttons for navigation
+    private Button btnGoSettings, btnGoProfile, btnGoTravelGuide, btnGoPostPage, btnGoAIBox, btnExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize buttons by linking them to layout elements
         btnGoSettings = findViewById(R.id.btn_go_settings);
         btnGoProfile = findViewById(R.id.btn_go_profile);
-        btnGoTravelGuide = findViewById(R.id.btn_go_travel_guide); // 新增按钮
+        btnGoTravelGuide = findViewById(R.id.btn_go_travel_guide); // Travel Guide button
         btnGoPostPage = findViewById(R.id.btn_go_post_page);
         btnGoAIBox = findViewById(R.id.btn_go_AI_Box);
         btnExit = findViewById(R.id.btn_Exit);
 
+        // Navigate to Settings screen
         btnGoSettings.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(intent);
         });
 
+        // Navigate to Profile screen
         btnGoProfile.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
 
-        // 新增按钮的跳转逻辑
+        // Navigate to Travel Guide screen
         btnGoTravelGuide.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, TravelGuideActivity.class);
             startActivity(intent);
         });
 
+        // Navigate to Post creation screen
         btnGoPostPage.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, PostActivity.class);
             startActivity(intent);
         });
 
+        // Navigate to AI Chatbot screen
         btnGoAIBox.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
             startActivity(intent);
         });
 
+        // Exit the app completely
         btnExit.setOnClickListener(v -> {
-            finishAffinity(); // Closes all activities
-            System.exit(0);   // Forcefully exits the app process
+            finishAffinity(); // Closes all open activities
+            System.exit(0);   // Terminates the process
         });
     }
 }

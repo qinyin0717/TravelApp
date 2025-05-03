@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="my.edu.utar.travelapp">
 
-    <!-- 权限声明 -->
+    <!-- Permission declarations -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -17,7 +17,7 @@
         android:theme="@style/Theme.TravelApp"
         tools:targetApi="31">
 
-        <!-- 启动页面 SplashActivity -->
+        <!-- Entry point of the app (launcher activity) -->
         <activity android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -26,23 +26,23 @@
             </intent-filter>
         </activity>
 
-
-        <!-- 主页面 MainActivity -->
+        <!-- Main screen -->
         <activity android:name=".MainActivity"
             android:exported="true" />
 
-        <!--  聊天机器人页面  -->
-        <activity android:name=".AI.ChatbotActivity" android:windowSoftInputMode="adjustResize"/>
+        <!-- Chatbot screen -->
+        <activity android:name=".AI.ChatbotActivity"
+            android:windowSoftInputMode="adjustResize"/>
 
-        <!-- 设置、资料相关页面 -->
+        <!-- Settings and profile-related screens -->
         <activity android:name=".Setting.SettingActivity"/>
         <activity android:name=".Setting.ProfileActivity"/>
         <activity android:name=".Setting.EditProfileActivity"/>
 
-        <!-- 发帖相关页面 -->
+        <!-- Post creation screen -->
         <activity android:name=".Post.PostActivity"/>
 
-        <!-- 旅游指南相关页面 -->
+        <!-- Travel guide screens -->
         <activity android:name=".TravelGuide.TravelGuideActivity" />
         <activity android:name=".TravelGuide.RecommendationDetailActivity" />
 

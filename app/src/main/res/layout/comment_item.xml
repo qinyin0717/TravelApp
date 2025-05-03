@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Profile image of the commenter -->
     <ImageView
         android:id="@+id/imageViewCommentProfile"
         android:layout_width="32dp"
@@ -14,12 +15,14 @@
         android:scaleType="centerCrop"
         android:background="@drawable/circle_background" />
 
+    <!-- Container for username and comment text -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
+        <!-- Username of the commenter -->
         <TextView
             android:id="@+id/textViewCommentUser"
             android:textStyle="bold"
@@ -28,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <!-- Actual comment text -->
         <TextView
             android:id="@+id/textViewCommentText"
             android:textSize="14sp"

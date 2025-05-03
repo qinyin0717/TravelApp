@@ -7,11 +7,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,16 +18,19 @@ import my.edu.utar.travelapp.R;
 
 public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAdapter.ViewHolder> {
 
+    // List of recommendation data and app context
     private List<RecommendationItem> items;
     private Context context;
     private CommentDatabaseHelper dbHelper;
 
+    // Constructor
     public RecommendationAdapter(List<RecommendationItem> items, Context context) {
         this.items = items;
         this.context = context;
-        this.dbHelper = new CommentDatabaseHelper(context);
+        this.dbHelper = new CommentDatabaseHelper(context); // local SQLite database helper
     }
 
+    // ViewHolder for recommendation card layout
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title, desc, update, rating, latestComment;
         ImageView image;
@@ -51,6 +50,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         }
     }
 
+    // Inflate the recommendation card layout
     @NonNull
     @Override
     public RecommendationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -58,6 +58,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         return new ViewHolder(view);
     }
 
+    // Bind data to the recommendation card views
     @Override
     public void onBindViewHolder(@NonNull RecommendationAdapter.ViewHolder holder, int position) {
         RecommendationItem item = items.get(position);
@@ -66,11 +67,11 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         holder.update.setText(item.updateNote.isEmpty() ? "" : item.updateNote);
         holder.image.setImageResource(item.imageRes);
 
-        // 获取数据库中的平均评分并显示
+        // Display average rating from database
         double average = dbHelper.getAverageRatingForPlace(item.title);
         holder.rating.setText("⭐ " + String.format("%.1f", average));
 
-        // 获取最新评论
+        // Display latest comment from database
         List<String> comments = dbHelper.getCommentsByPlace(item.title);
         if (comments != null && !comments.isEmpty()) {
             holder.latestComment.setText("💬 " + comments.get(comments.size() - 1));
@@ -78,6 +79,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
             holder.latestComment.setText("");
         }
 
+        // Detail button opens detail screen
         holder.detailBtn.setOnClickListener(v -> {
             Intent intent = new Intent(context, RecommendationDetailActivity.class);
             intent.putExtra("title", item.title);
@@ -88,6 +90,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
             context.startActivity(intent);
         });
 
+        // Rating button shows dialog and saves user rating
         holder.rateBtn.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Rate this place");
@@ -100,7 +103,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
                 String currentUser = prefs.getString("user_name", "Anonymous");
 
                 dbHelper.insertOrUpdateRating(item.title, currentUser, newRating);
-                notifyItemChanged(position);
+                notifyItemChanged(position); // refresh rating display
 
                 Toast.makeText(context, currentUser + " rated " + item.title + ": " + newRating + " stars", Toast.LENGTH_SHORT).show();
             });
@@ -108,6 +111,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
             builder.show();
         });
 
+        // Comment button shows input dialog and stores comment
         holder.commentBtn.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Leave a Comment");
@@ -122,7 +126,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
                     SharedPreferences prefs = context.getSharedPreferences("AppSettingsPrefs", Context.MODE_PRIVATE);
                     String currentUser = prefs.getString("user_name", "Anonymous");
                     dbHelper.insertComment(item.title, currentUser, comment);
-                    notifyItemChanged(position);
+                    notifyItemChanged(position); // refresh latest comment
                     Toast.makeText(context, "Comment added!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Comment is empty.", Toast.LENGTH_SHORT).show();
@@ -134,6 +138,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         });
     }
 
+    // Total number of recommendation items
     @Override
     public int getItemCount() {
         return items.size();

@@ -19,10 +19,14 @@ public class TravelGuideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel_guide);
 
+        // Initialize RecyclerView and set layout
         recyclerView = findViewById(R.id.recommendation_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Initialize the list of recommendations
         recommendationList = new ArrayList<>();
+
+        // Add each destination with details (title, desc, rating, image, location, full description)
         recommendationList.add(new RecommendationItem("Petronas Twin Towers", "Iconic skyscrapers offering panoramic city views from the Skybridge.", 4.5, R.drawable.img1, "\uD83D\uDCCD Location: Kuala Lumpur","Once the tallest buildings in the world, the 88-storey Petronas Twin Towers in Kuala Lumpur are a symbol of Malaysia’s modern progress. Visitors can explore the Skybridge connecting the towers and ascend to the observation deck for breathtaking panoramic views. The towers are surrounded by shopping malls, fountains, and a beautiful urban park."));
         recommendationList.add(new RecommendationItem("Langkawi Sky Bridge", "A curved bridge suspended above lush rainforest peaks.", 4.4, R.drawable.img2, "\uD83D\uDCCD Location: Langkawi, Kedah", "The Langkawi Sky Bridge is a 125-meter curved pedestrian bridge suspended 660 meters above sea level on top of Gunung Mat Cincang. It offers incredible views of Langkawi’s lush rainforests and turquoise waters. The bridge is an architectural marvel supported by a single pylon and accessible via a thrilling cable car ride."));
         recommendationList.add(new RecommendationItem("George Town", "A heritage city filled with street art, culture, and local delicacies.", 4.4, R.drawable.img3, "\uD83D\uDCCD Location: Penang", "George Town, a UNESCO World Heritage Site, is famed for its rich multicultural history, colonial architecture, and vibrant street art. As you explore the town, you’ll find colorful murals, heritage buildings, local Chinese clan houses, and hawker stalls offering some of the best food in Malaysia."));
@@ -34,7 +38,7 @@ public class TravelGuideActivity extends AppCompatActivity {
         recommendationList.add(new RecommendationItem("Perhentian Islands", "Paradise islands known for snorkeling and white beaches.", 4.2, R.drawable.img9, "\uD83D\uDCCD Location: Terengganu", "Located off the coast of Terengganu, the Perhentian Islands are a tropical paradise with crystal-clear waters and powdery white beaches. Popular for snorkeling, diving, and relaxing, the islands have minimal development, providing a peaceful retreat with a strong focus on nature conservation."));
         recommendationList.add(new RecommendationItem("Legoland Malaysia", "A theme park full of LEGO adventures for families.", 4.5, R.drawable.img10, "\uD83D\uDCCD Location: Johor Bahru", "Located in Johor Bahru, Legoland Malaysia is Southeast Asia’s first LEGO-themed park. It features more than 40 interactive rides, shows, and attractions for children and families. The complex includes a water park, a SEA LIFE aquarium, and a LEGO-themed hotel, making it a full-day fun experience for all ages."));
 
-
+        // Set adapter for RecyclerView with the list
         adapter = new RecommendationAdapter(recommendationList, this);
         recyclerView.setAdapter(adapter);
     }

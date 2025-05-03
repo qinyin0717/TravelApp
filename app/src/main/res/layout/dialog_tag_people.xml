@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Input field for tagging people using auto-complete suggestions -->
     <MultiAutoCompleteTextView
         android:id="@+id/tagPeopleInput"
         android:hint="Type names to tag"
