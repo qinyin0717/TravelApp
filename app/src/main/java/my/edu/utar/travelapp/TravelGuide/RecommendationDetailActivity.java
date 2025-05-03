@@ -30,16 +30,15 @@ public class RecommendationDetailActivity extends AppCompatActivity {
         desc.setText(intent.getStringExtra("description"));
         image.setImageResource(intent.getIntExtra("image", 0));
 
-        // 显示评分
+        // 显示平均评分
         CommentDatabaseHelper dbHelper = new CommentDatabaseHelper(this);
         double avgRating = dbHelper.getAverageRatingForPlace(placeTitle);
         rating.setText("⭐ " + String.format("%.1f", avgRating));
 
-        // 获取评论列表
+        // 从数据库加载评论并包含时间
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
                 "SELECT user, text, timestamp FROM comments WHERE place = ? ORDER BY timestamp ASC",
-                new String[]{placeTitle}
-        );
+                new String[]{placeTitle});
 
         if (cursor != null && cursor.moveToFirst()) {
             StringBuilder builder = new StringBuilder();
@@ -47,8 +46,7 @@ public class RecommendationDetailActivity extends AppCompatActivity {
                 String user = cursor.getString(0);
                 String text = cursor.getString(1);
                 String timestamp = cursor.getString(2);
-                builder.append("• ").append(user).append(": ").append(text)
-                        .append(" [").append(timestamp).append("]\n");
+                builder.append("• ").append(user).append(": ").append(text).append(" [").append(timestamp).append("]\n");
             } while (cursor.moveToNext());
             cursor.close();
             commentList.setText(builder.toString());
