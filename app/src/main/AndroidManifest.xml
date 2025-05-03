@@ -26,12 +26,13 @@
             </intent-filter>
         </activity>
 
+
         <!-- 主页面 MainActivity -->
         <activity android:name=".MainActivity"
             android:exported="true" />
 
-        <!-- 聊天机器人页面 -->
-        <activity android:name=".AI.ChatbotActivity"/>
+        <!--  聊天机器人页面  -->
+        <activity android:name=".AI.ChatbotActivity" android:windowSoftInputMode="adjustResize"/>
 
         <!-- 设置、资料相关页面 -->
         <activity android:name=".Setting.SettingActivity"/>

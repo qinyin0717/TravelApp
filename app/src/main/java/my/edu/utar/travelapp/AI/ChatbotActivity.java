@@ -103,38 +103,41 @@ public class ChatbotActivity extends AppCompatActivity {
 
     private void appendMessage(String message, Boolean isUser) {
         runOnUiThread(() -> {
+            // CardView for shadow and rounded background
+            androidx.cardview.widget.CardView card = new androidx.cardview.widget.CardView(this);
+            card.setCardElevation(6); // shadow
+            card.setRadius(12); // rounded corners
+            card.setUseCompatPadding(true); // extra padding for pre-Lollipop devices
+
+            // TextView for the actual message
             TextView messageView = new TextView(this);
             messageView.setText(message);
             messageView.setTextSize(16);
             messageView.setPadding(20, 10, 20, 10);
 
+            LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
             if (isUser) {
-                messageView.setBackgroundColor(0xFF9FE2BF); // darker green
+                card.setCardBackgroundColor(0xFF9FE2BF); // user: green
                 messageView.setTextColor(0xFF000000);
-                messageView.setTextIsSelectable(false);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(100, 10, 10, 10);  // shifted more to the right
-                params.gravity = Gravity.END;
-                messageView.setLayoutParams(params);
+                cardParams.setMargins(100, 10, 10, 10);
+                cardParams.gravity = Gravity.END;
             } else {
-                messageView.setBackgroundColor(0xFFFFFFFF); // bot: white
+                card.setCardBackgroundColor(0xFFFFFFFF); // bot: white
                 messageView.setTextColor(0xFF000000);
-                messageView.setTextIsSelectable(true);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(10, 10, 100, 10);  // shifted to left
-                params.gravity = Gravity.START;
-                messageView.setLayoutParams(params);
+                cardParams.setMargins(10, 10, 100, 10);
+                cardParams.gravity = Gravity.START;
             }
 
+            card.setLayoutParams(cardParams);
+            card.addView(messageView);
+            chatContainer.addView(card);
 
-            chatContainer.addView(messageView);
-
-            // Scroll to bottom
+            // Auto-scroll
             scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
         });
     }
+
 }

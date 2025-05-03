@@ -27,7 +27,7 @@ public class RecommendationDetailActivity extends AppCompatActivity {
         String placeTitle = intent.getStringExtra("title");
 
         title.setText(placeTitle);
-        desc.setText(intent.getStringExtra("description"));
+        desc.setText(intent.getStringExtra("fullDescription"));
         image.setImageResource(intent.getIntExtra("image", 0));
 
         // 显示平均评分

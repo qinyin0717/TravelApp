@@ -84,6 +84,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
             intent.putExtra("description", item.description);
             intent.putExtra("rating", average);
             intent.putExtra("image", item.imageRes);
+            intent.putExtra("fullDescription", item.fullDescription);
             context.startActivity(intent);
         });
 
