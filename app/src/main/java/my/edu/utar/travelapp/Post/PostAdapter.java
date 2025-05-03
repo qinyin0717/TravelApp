@@ -2,17 +2,27 @@ package my.edu.utar.travelapp.Post;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.VideoView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.button.MaterialButton;
+
 import java.util.List;
+
 import my.edu.utar.travelapp.R;
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private final List<Post> posts;
 
@@ -29,20 +39,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
+        h.setIsRecyclable(false);
         Post post = posts.get(pos);
 
-        h.imageViewProfile.setImageResource(R.drawable.ic_profile_test);
+        Uri profileUri = post.getUserProfileUri();
+        if (profileUri != null) {
+            h.imageViewProfile.setImageURI(null);
+            h.imageViewProfile.setImageURI(profileUri);
+        } else {
+            h.imageViewProfile.setImageResource(R.drawable.ic_profile_test);
+        }
+
         h.textViewPost.setText(post.getText());
+        h.editTextNewComment.setText(""); // ✨ Clear previous input
 
         Post shared = post.getSharedPost();
         if (shared != null) {
             h.textViewUserName.setText("Shared by " + post.getSharedBy());
-            h.textViewPost.setTypeface(null, Typeface.BOLD);
             h.sharedContainer.setVisibility(View.VISIBLE);
             h.textViewShared.setText("Originally posted by " + shared.getUserName() + ": " + shared.getText());
         } else {
             h.textViewUserName.setText(post.getUserName());
-            h.textViewPost.setTypeface(null, Typeface.NORMAL);
             h.sharedContainer.setVisibility(View.GONE);
         }
 
@@ -55,22 +72,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
 
         Uri img = post.getImageUri(), vid = post.getVideoUri();
-        try {
-            if (img != null) {
-                h.imageViewPost.setVisibility(View.VISIBLE);
-                h.videoViewPost.setVisibility(View.GONE);
-                h.imageViewPost.setImageURI(null);
-                h.imageViewPost.setImageURI(img);
-            } else if (vid != null) {
-                h.videoViewPost.setVisibility(View.VISIBLE);
-                h.imageViewPost.setVisibility(View.GONE);
-                h.videoViewPost.setVideoURI(vid);
-                h.videoViewPost.setOnPreparedListener(mp -> h.videoViewPost.start());
-            } else {
-                h.imageViewPost.setVisibility(View.GONE);
-                h.videoViewPost.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
+        if (img != null) {
+            h.imageViewPost.setVisibility(View.VISIBLE);
+            h.videoViewPost.setVisibility(View.GONE);
+            h.imageViewPost.setImageURI(null);
+            h.imageViewPost.setImageURI(img);
+        } else if (vid != null) {
+            h.videoViewPost.setVisibility(View.VISIBLE);
+            h.imageViewPost.setVisibility(View.GONE);
+            h.videoViewPost.setVideoURI(vid);
+            h.videoViewPost.setOnPreparedListener(mp -> h.videoViewPost.start());
+        } else {
             h.imageViewPost.setVisibility(View.GONE);
             h.videoViewPost.setVisibility(View.GONE);
         }
@@ -84,10 +96,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
 
         h.buttonLike.setText("Like (" + post.getLikeCount() + ")");
-        h.buttonComment.setVisibility(View.GONE);
         h.buttonLike.setIconTintResource(
-                post.isLiked() ? R.color.colorPrimary : R.color.colorOnSurfaceVariant
-        );
+                post.isLiked() ? R.color.colorPrimary : R.color.colorOnSurfaceVariant);
 
         h.buttonLike.setOnClickListener(v -> {
             post.toggleLike();
@@ -110,8 +120,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             String commentText = h.editTextNewComment.getText().toString().trim();
             if (!commentText.isEmpty()) {
                 Context ctx = v.getContext();
-                Uri profileUri = Uri.parse("android.resource://" + ctx.getPackageName() + "/" + R.drawable.ic_profile_test);
-                Post.Comment newComment = new Post.Comment("Test User", profileUri, commentText);
+                SharedPreferences prefs = ctx.getSharedPreferences("AppSettingsPrefs", Context.MODE_PRIVATE);
+                String userName = prefs.getString("user_name", "Anonymous");
+                String imageUriStr = prefs.getString("profile_image", "");
+                Uri commentProfileUri = imageUriStr.isEmpty()
+                        ? Uri.parse("android.resource://" + ctx.getPackageName() + "/" + R.drawable.ic_profile_test)
+                        : Uri.parse(imageUriStr);
+
+                Post.Comment newComment = new Post.Comment(userName, commentProfileUri, commentText);
                 post.addComment(newComment);
                 h.editTextNewComment.setText("");
                 notifyItemChanged(pos);
@@ -127,7 +143,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 View cv = LayoutInflater.from(ctx).inflate(R.layout.comment_item, h.layoutCommentList, false);
                 ((TextView) cv.findViewById(R.id.textViewCommentUser)).setText(c.getUserName());
                 ((TextView) cv.findViewById(R.id.textViewCommentText)).setText(c.getText());
-                ((ImageView) cv.findViewById(R.id.imageViewCommentProfile)).setImageURI(c.getUserProfileUri());
+                ImageView image = cv.findViewById(R.id.imageViewCommentProfile);
+                if (c.getUserProfileUri() != null) {
+                    image.setImageURI(null);
+                    image.setImageURI(c.getUserProfileUri());
+                } else {
+                    image.setImageResource(R.drawable.ic_profile_test);
+                }
                 h.layoutCommentList.addView(cv);
             }
         } else {

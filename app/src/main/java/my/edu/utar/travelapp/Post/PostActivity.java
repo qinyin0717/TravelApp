@@ -3,6 +3,7 @@ package my.edu.utar.travelapp.Post;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -82,7 +83,13 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        // Bind views
+        SharedPreferences prefs = getSharedPreferences("AppSettingsPrefs", MODE_PRIVATE);
+        final String testUserName = prefs.getString("user_name", "Anonymous");
+        String imageUriStr = prefs.getString("profile_image", "");
+        Uri profileUri = imageUriStr.isEmpty()
+                ? Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.ic_profile_test)
+                : Uri.parse(imageUriStr);
+
         headerCollapsed = findViewById(R.id.headerCollapsed);
         composerExpanded = findViewById(R.id.composerExpanded);
         imageViewCurrentProfile = findViewById(R.id.imageViewCurrentProfile);
@@ -102,18 +109,14 @@ public class PostActivity extends AppCompatActivity {
         Spinner spinnerCity = findViewById(R.id.spinnerCity);
         LinearLayout locationContainer = findViewById(R.id.locationContainer);
 
-        // Static test user data
-        final String testUserName = "Test User";
-        imageViewCurrentProfile.setImageResource(R.drawable.ic_profile_test);
-        imageViewComposerPic.setImageResource(R.drawable.ic_profile_test);
+        imageViewCurrentProfile.setImageURI(profileUri);
+        imageViewComposerPic.setImageURI(profileUri);
         textViewComposerName.setText(testUserName);
 
-        // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PostAdapter(DataRepository.getPosts());
         recyclerView.setAdapter(adapter);
 
-        // State dropdown
         ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, STATES);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerState.setAdapter(stateAdapter);
@@ -125,21 +128,18 @@ public class PostActivity extends AppCompatActivity {
                 cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerCity.setAdapter(cityAdapter);
             }
-
-            @Override public void onNothingSelected(AdapterView<?> parent) { }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 selectedLocationText = spinnerState.getSelectedItem() + ", " + spinnerCity.getSelectedItem();
             }
-
-            @Override public void onNothingSelected(AdapterView<?> parent) { }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         buttonAddLocation.setOnClickListener(v -> locationContainer.setVisibility(View.VISIBLE));
 
-        // Media picker
         pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 Uri uri = result.getData().getData();
@@ -166,8 +166,7 @@ public class PostActivity extends AppCompatActivity {
                     .setPositiveButton("OK", (dialog, which) -> {
                         taggedPeople.clear();
                         String[] names = input.getText().toString().split("\\s*,\\s*");
-                        for (String name : names)
-                            if (!name.isEmpty()) taggedPeople.add(name);
+                        for (String name : names) if (!name.isEmpty()) taggedPeople.add(name);
                         TextView tv = findViewById(R.id.textViewTagged);
                         if (taggedPeople.isEmpty()) tv.setVisibility(View.GONE);
                         else {
@@ -182,39 +181,12 @@ public class PostActivity extends AppCompatActivity {
         headerCollapsed.setOnClickListener(v -> {
             isShareMode = false;
             buttonPost.setText("POST");
-
             buttonSelectMedia.setVisibility(View.VISIBLE);
             buttonAddLocation.setVisibility(View.VISIBLE);
             headerCollapsed.setVisibility(View.GONE);
             composerExpanded.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         });
-
-        // Share post logic
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("sharedText")) {
-            String text = intent.getStringExtra("sharedText");
-            String user = intent.getStringExtra("sharedUser");
-            Uri imageUri = intent.hasExtra("sharedImageUri") ? Uri.parse(intent.getStringExtra("sharedImageUri")) : null;
-            Uri videoUri = intent.hasExtra("sharedVideoUri") ? Uri.parse(intent.getStringExtra("sharedVideoUri")) : null;
-            Uri profileUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.ic_profile_test);
-            sharedPost = new Post(text, imageUri, videoUri, user, profileUri, null, new ArrayList<>(), null, null);
-
-            adapter = new PostAdapter(DataRepository.getPosts());
-            recyclerView.setAdapter(adapter);
-
-            // UI updates for share mode
-            headerCollapsed.setVisibility(View.GONE);
-            composerExpanded.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-
-            editTextPost.setHint("Say something about this post...");
-            buttonPost.setText("SHARE");
-
-            buttonSelectMedia.setVisibility(View.GONE);
-            buttonAddLocation.setVisibility(View.GONE);
-            findViewById(R.id.locationContainer).setVisibility(View.GONE);
-        }
 
         buttonPost.setOnClickListener(v -> {
             String text = editTextPost.getText().toString().trim();
@@ -231,13 +203,12 @@ public class PostActivity extends AppCompatActivity {
                 statusContainer.setVisibility(View.VISIBLE);
 
                 handler.postDelayed(() -> {
-                    Uri testUserProfileUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.ic_profile_test);
                     Post post = new Post(
                             text,
                             selectedImageUri,
                             selectedVideoUri,
                             testUserName,
-                            testUserProfileUri,
+                            profileUri,
                             selectedLocationText,
                             taggedPeople,
                             sharedPost,
@@ -261,7 +232,6 @@ public class PostActivity extends AppCompatActivity {
 
                     buttonPost.setEnabled(true);
                     statusContainer.setVisibility(View.GONE);
-
                     composerExpanded.setVisibility(View.GONE);
                     headerCollapsed.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
