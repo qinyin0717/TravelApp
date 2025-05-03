@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">postbrowseedit</string>
+    <string name="app_name">JovaGo</string>
     <string name="prompt_select_state">Select State</string>
     <string name="prompt_select_city">Select City</string>
 </resources>

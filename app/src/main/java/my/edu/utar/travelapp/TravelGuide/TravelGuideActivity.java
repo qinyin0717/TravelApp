@@ -23,16 +23,16 @@ public class TravelGuideActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recommendationList = new ArrayList<>();
-        recommendationList.add(new RecommendationItem("Lost Forest Cafe", "A cozy cafe surrounded by lush greenery", 4.5, R.drawable.img1, "Now open daily until 10pm"));
-        recommendationList.add(new RecommendationItem("Skyhill Viewpoint", "Breathtaking panoramic city view", 4.4, R.drawable.img2, "Open as usual"));
-        recommendationList.add(new RecommendationItem("Ocean Breeze Market", "Local market with sea breeze and snacks", 4.4, R.drawable.img3, "Note: Some stalls closed on Monday"));
-        recommendationList.add(new RecommendationItem("Sunset Cliff", "Perfect place to watch the sunset", 4.8, R.drawable.img4, "📢 Closed this weekend for maintenance"));
-        recommendationList.add(new RecommendationItem("Old Town Alley", "Historic alley with local art and craft shops", 4.9, R.drawable.img5, "Expect weekend crowd"));
-        recommendationList.add(new RecommendationItem("Mountain Spring Trail", "Hiking trail with natural spring water", 4.3, R.drawable.img6, "Trail muddy after rain - wear boots"));
-        recommendationList.add(new RecommendationItem("Lantern Riverwalk", "Nighttime walk with glowing lanterns", 4.6, R.drawable.img7, "Festival lights on this week only"));
-        recommendationList.add(new RecommendationItem("Secret Beach", "Quiet, clean beach not on maps", 4.7, R.drawable.img8, "Check tide before visiting"));
-        recommendationList.add(new RecommendationItem("Hidden Temple", "Ancient temple hidden in the hills", 4.2, R.drawable.img9, "Limited access during restoration"));
-        recommendationList.add(new RecommendationItem("Bamboo Garden", "Peaceful garden with bamboo groves", 4.5, R.drawable.img10, "Open 8am - 6pm daily"));
+        recommendationList.add(new RecommendationItem("Petronas Twin Towers", "Iconic skyscrapers offering panoramic city views from the Skybridge.", 4.5, R.drawable.img1, "\uD83D\uDCCD Location: Kuala Lumpur"));
+        recommendationList.add(new RecommendationItem("Langkawi Sky Bridge", "A curved bridge suspended above lush rainforest peaks.", 4.4, R.drawable.img2, "\uD83D\uDCCD Location: Langkawi, Kedah"));
+        recommendationList.add(new RecommendationItem("George Town", "A heritage city filled with street art, culture, and local delicacies.", 4.4, R.drawable.img3, "\uD83D\uDCCD Location: Penang"));
+        recommendationList.add(new RecommendationItem("Mount Kinabalu", "Malaysia’s tallest peak, ideal for hiking and nature exploration.", 4.8, R.drawable.img4, "\uD83D\uDCCD Location: Sabah, Borneo"));
+        recommendationList.add(new RecommendationItem("Batu Caves", " Hindu temple caves accessed by colorful 272-step stairs.", 4.9, R.drawable.img5, "\uD83D\uDCCD Location: Selangor"));
+        recommendationList.add(new RecommendationItem("Cameron Highlands", "Cool hill retreat with tea farms and strawberry picking.", 4.3, R.drawable.img6, "\uD83D\uDCCD Location: Pahang"));
+        recommendationList.add(new RecommendationItem("Kuala Lumpur Tower (KL Tower)", "Tall observation tower with sky deck and city views.", 4.6, R.drawable.img7, "\uD83D\uDCCD Location: Kuala Lumpur"));
+        recommendationList.add(new RecommendationItem("Malacca City", "Historic town showcasing colonial architecture and river cruises.", 4.7, R.drawable.img8, "\uD83D\uDCCD Location: Melaka"));
+        recommendationList.add(new RecommendationItem("Perhentian Islands", "Paradise islands known for snorkeling and white beaches.", 4.2, R.drawable.img9, "\uD83D\uDCCD Location: Terengganu"));
+        recommendationList.add(new RecommendationItem("Legoland Malaysia", "A theme park full of LEGO adventures for families.", 4.5, R.drawable.img10, "\uD83D\uDCCD Location: Johor Bahru"));
 
 
         adapter = new RecommendationAdapter(recommendationList, this);
