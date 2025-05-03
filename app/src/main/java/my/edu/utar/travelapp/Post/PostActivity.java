@@ -33,6 +33,7 @@ import java.util.Map;
 import my.edu.utar.travelapp.R;
 
 public class PostActivity extends AppCompatActivity {
+    // UI components
     private LinearLayout headerCollapsed, composerExpanded, statusContainer;
     private ImageView imageViewCurrentProfile, imageViewComposerPic, imageStatusIcon;
     private TextView textViewComposerName, textStatusMessage;
@@ -42,15 +43,16 @@ public class PostActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PostAdapter adapter;
 
+    // Post state
     private boolean isShareMode = false;
     private Uri selectedImageUri, selectedVideoUri;
     private String selectedLocationText;
     private Post sharedPost = null;
     private List<String> taggedPeople = new ArrayList<>();
     private final Handler handler = new Handler();
-
     private ActivityResultLauncher<Intent> pickMediaLauncher;
 
+    // Dummy data for tagging and locations
     private final String[] DUMMY_NAMES = {"Adeline", "Alice", "Bob", "Charlie", "David"};
     private final String[] STATES = {
             "Johor", "Kedah", "Kelantan", "Melaka", "Negeri Sembilan", "Pahang",
@@ -83,6 +85,7 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        // Load shared preferences
         SharedPreferences prefs = getSharedPreferences("AppSettingsPrefs", MODE_PRIVATE);
         final String testUserName = prefs.getString("user_name", "Anonymous");
         String imageUriStr = prefs.getString("profile_image", "");
@@ -90,6 +93,7 @@ public class PostActivity extends AppCompatActivity {
                 ? Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.ic_profile_test)
                 : Uri.parse(imageUriStr);
 
+        // Bind UI
         headerCollapsed = findViewById(R.id.headerCollapsed);
         composerExpanded = findViewById(R.id.composerExpanded);
         imageViewCurrentProfile = findViewById(R.id.imageViewCurrentProfile);
@@ -109,18 +113,22 @@ public class PostActivity extends AppCompatActivity {
         Spinner spinnerCity = findViewById(R.id.spinnerCity);
         LinearLayout locationContainer = findViewById(R.id.locationContainer);
 
+        // Set profile picture and name
         imageViewCurrentProfile.setImageURI(profileUri);
         imageViewComposerPic.setImageURI(profileUri);
         textViewComposerName.setText(testUserName);
 
+        // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PostAdapter(DataRepository.getPosts());
         recyclerView.setAdapter(adapter);
 
+        // Setup state spinner
         ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, STATES);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerState.setAdapter(stateAdapter);
 
+        // State selection updates city spinner
         spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String state = STATES[pos];
@@ -131,6 +139,7 @@ public class PostActivity extends AppCompatActivity {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        // City selection saves selected location
         spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 selectedLocationText = spinnerState.getSelectedItem() + ", " + spinnerCity.getSelectedItem();
@@ -138,8 +147,10 @@ public class PostActivity extends AppCompatActivity {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        // Show location selection layout
         buttonAddLocation.setOnClickListener(v -> locationContainer.setVisibility(View.VISIBLE));
 
+        // Media picker logic
         pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 Uri uri = result.getData().getData();
@@ -154,6 +165,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        // Tag people dialog
         buttonTagPeople.setOnClickListener(v -> {
             View dialogView = getLayoutInflater().inflate(R.layout.dialog_tag_people, null);
             MultiAutoCompleteTextView input = dialogView.findViewById(R.id.tagPeopleInput);
@@ -178,6 +190,7 @@ public class PostActivity extends AppCompatActivity {
                     .show();
         });
 
+        // Expand post composer
         headerCollapsed.setOnClickListener(v -> {
             isShareMode = false;
             buttonPost.setText("POST");
@@ -188,6 +201,7 @@ public class PostActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.GONE);
         });
 
+        // Post submission
         buttonPost.setOnClickListener(v -> {
             String text = editTextPost.getText().toString().trim();
             if (text.isEmpty() && selectedImageUri == null && selectedVideoUri == null && sharedPost == null) return;
@@ -204,14 +218,9 @@ public class PostActivity extends AppCompatActivity {
 
                 handler.postDelayed(() -> {
                     Post post = new Post(
-                            text,
-                            selectedImageUri,
-                            selectedVideoUri,
-                            testUserName,
-                            profileUri,
-                            selectedLocationText,
-                            taggedPeople,
-                            sharedPost,
+                            text, selectedImageUri, selectedVideoUri,
+                            testUserName, profileUri, selectedLocationText,
+                            taggedPeople, sharedPost,
                             sharedPost != null ? testUserName : null
                     );
 
@@ -219,6 +228,7 @@ public class PostActivity extends AppCompatActivity {
                     adapter.notifyItemInserted(0);
                     recyclerView.scrollToPosition(0);
 
+                    // Reset UI
                     editTextPost.setText("");
                     selectedImageUri = selectedVideoUri = null;
                     selectedLocationText = null;

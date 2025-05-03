@@ -4,6 +4,7 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.List;
 
+// Represents a user-generated post
 public class Post {
     private final String text;
     private final Uri imageUri;
@@ -20,7 +21,7 @@ public class Post {
     private int commentCount = 0;
     private boolean liked = false;
 
-    // Full constructor for shared posts
+    // Constructor for shared post
     public Post(String text,
                 Uri imageUri,
                 Uri videoUri,
@@ -41,7 +42,7 @@ public class Post {
         this.sharedBy = sharedBy;
     }
 
-    // Constructor for original posts
+    // Constructor for original post
     public Post(String text,
                 Uri imageUri,
                 Uri videoUri,
@@ -67,20 +68,24 @@ public class Post {
     public String getSharedBy() { return sharedBy; }
     public List<Comment> getComments() { return comments; }
 
+    // Toggle like status and update count
     public void toggleLike() {
         liked = !liked;
         likeCount = liked ? likeCount + 1 : Math.max(0, likeCount - 1);
     }
 
+    // Increment comment count
     public void comment() {
         commentCount++;
     }
 
+    // Add a comment object
     public void addComment(Comment c) {
         comments.add(c);
         comment();
     }
 
+    // Inner class representing a comment
     public static class Comment {
         private final String userName;
         private final Uri userProfileUri;

@@ -33,6 +33,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the post item layout
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
         return new ViewHolder(v);
     }
@@ -42,6 +43,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         h.setIsRecyclable(false);
         Post post = posts.get(pos);
 
+        // Set user profile image
         Uri profileUri = post.getUserProfileUri();
         if (profileUri != null) {
             h.imageViewProfile.setImageURI(null);
@@ -50,9 +52,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             h.imageViewProfile.setImageResource(R.drawable.ic_profile_test);
         }
 
+        // Set post content text
         h.textViewPost.setText(post.getText());
-        h.editTextNewComment.setText(""); // ✨ Clear previous input
+        h.editTextNewComment.setText(""); // Clear previous comment input
 
+        // Handle shared posts
         Post shared = post.getSharedPost();
         if (shared != null) {
             h.textViewUserName.setText("Shared by " + post.getSharedBy());
@@ -63,6 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             h.sharedContainer.setVisibility(View.GONE);
         }
 
+        // Display tagged people if any
         List<String> tags = post.getTaggedPeople();
         if (tags != null && !tags.isEmpty()) {
             h.textViewFeedTagged.setText("Tagged " + tags.size() + " people");
@@ -71,6 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             h.textViewFeedTagged.setVisibility(View.GONE);
         }
 
+        // Handle image or video media
         Uri img = post.getImageUri(), vid = post.getVideoUri();
         if (img != null) {
             h.imageViewPost.setVisibility(View.VISIBLE);
@@ -87,6 +93,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             h.videoViewPost.setVisibility(View.GONE);
         }
 
+        // Display location if available
         String loc = post.getLocation();
         if (loc != null && !loc.isEmpty()) {
             h.textViewPostLocation.setText(loc);
@@ -95,15 +102,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             h.textViewPostLocation.setVisibility(View.GONE);
         }
 
+        // Like button state and functionality
         h.buttonLike.setText("Like (" + post.getLikeCount() + ")");
         h.buttonLike.setIconTintResource(
                 post.isLiked() ? R.color.colorPrimary : R.color.colorOnSurfaceVariant);
-
         h.buttonLike.setOnClickListener(v -> {
             post.toggleLike();
             notifyItemChanged(pos);
         });
 
+        // Share post with intent
         h.buttonShare.setOnClickListener(v -> {
             Context ctx = v.getContext();
             Intent intent = new Intent(ctx, PostActivity.class);
@@ -116,6 +124,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             ctx.startActivity(intent);
         });
 
+        // Submit new comment
         h.buttonSubmitComment.setOnClickListener(v -> {
             String commentText = h.editTextNewComment.getText().toString().trim();
             if (!commentText.isEmpty()) {
@@ -134,6 +143,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        // Render comment list
         List<Post.Comment> comments = post.getComments();
         h.layoutCommentList.removeAllViews();
         if (!comments.isEmpty()) {
