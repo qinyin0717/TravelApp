@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,8 +13,7 @@
             android:id="@+id/detail_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/detail_title"
@@ -28,28 +26,30 @@
 
         <TextView
             android:id="@+id/detail_description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Description here..."
-            android:layout_marginTop="8dp" />
+            android:text="Full detailed description here..."
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="4dp" />
 
         <TextView
             android:id="@+id/detail_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="⭐ 4.3"
-            android:textSize="16sp"
+            android:layout_marginTop="8dp"
             android:textColor="#FF9800"
-            android:layout_marginTop="8dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/comments_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Comments:"
-            android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/comment_list"
